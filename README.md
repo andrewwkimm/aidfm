@@ -1,5 +1,10 @@
 # aidfm
 
+![CI](https://github.com/andrewwkimm/aidfm/actions/workflows/ci.yml/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/andrewwkimm/aidfm)](https://goreportcard.com/report/github.com/andrewwkimm/aidfm)
+![Go version](https://img.shields.io/github/go-mod/go-version/andrewwkimm/aidfm)
+![License](https://img.shields.io/github/license/andrewwkimm/aidfm?color=blue)
+
 **A**pp**I**mage **D**esktop **F**ile **M**anager is a CLI for managing AppImages on Linux. It automates the creation of desktop entries, manages binary permissions, and maintains a local registry to track the health of installed applications.
 
 ## Getting started
