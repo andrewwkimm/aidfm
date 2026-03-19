@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/andrewwkimm/aidfm/internal/desktop"
+	"github.com/andrewwkimm/aidfm/internal/detect"
 	"github.com/andrewwkimm/aidfm/internal/registry"
 )
 
@@ -66,16 +67,27 @@ func fixEntry(entry *registry.Entry, reg *registry.Registry) error {
 		return fmt.Errorf("failed to set executable bit on %s: %w", entry.Binary, err)
 	}
 
+	// Re-run detection if icon is missing
+	if entry.Icon != "" && !fileExists(entry.Icon) {
+		result, err := detect.FromDirectory(entry.ParentDir)
+		if err == nil && result.Icon != "" {
+			fmt.Printf("icon updated: %s → %s\n", entry.Icon, result.Icon)
+			entry.Icon = result.Icon
+		} else {
+			fmt.Fprintf(os.Stderr, "warning: icon %s is missing and no replacement found\n", entry.Icon)
+		}
+	}
+
 	// Rewrite desktop file preserving existing exec line
 	df, err := desktop.Read(entry.Desktop)
 	if err != nil {
-		// Desktop file missing — recreate it
 		df = desktop.New(entry.Desktop)
 		df.Set("Name", entry.Name)
 		df.Set("Exec", entry.Binary)
-		if entry.Icon != "" {
-			df.Set("Icon", entry.Icon)
-		}
+	}
+
+	if entry.Icon != "" {
+		df.Set("Icon", entry.Icon)
 	}
 
 	if err := df.Write(); err != nil {
