@@ -81,6 +81,11 @@ func runRemove(cmd *cobra.Command, args []string) error {
 				fmt.Fprintf(os.Stderr, "warning: failed to remove icon: %v\n", err)
 			}
 		}
+		if entry.ParentDir != "" {
+			if err := os.RemoveAll(entry.ParentDir); err != nil {
+				fmt.Fprintf(os.Stderr, "warning: failed to remove app directory: %v\n", err)
+			}
+		}
 	}
 
 	desktopDir := desktopDirForScope(entry.Scope)

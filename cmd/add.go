@@ -50,18 +50,29 @@ func runAdd(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("no AppImage or executable found in %s", inputPath)
 	}
 
-	// Derive default name from binary filename
-	name := strings.TrimSuffix(filepath.Base(result.Binary), ".AppImage")
+	parentDir := inputPath
+	if !info.IsDir() {
+		parentDir = filepath.Dir(inputPath)
+	}
 
-	// Confirm detected values with user
+	name := strings.TrimSuffix(filepath.Base(result.Binary), ".AppImage")
 	confirmed := false
+
 	form := huh.NewForm(
 		huh.NewGroup(
 			huh.NewInput().
 				Title("Name").
 				Value(&name),
+			huh.NewNote().
+				Title("Detected").
+				Description(fmt.Sprintf(
+					"Binary: %s\nIcon:   %s\nDir:    %s",
+					result.Binary,
+					result.Icon,
+					parentDir,
+				)),
 			huh.NewConfirm().
-				Title(fmt.Sprintf("Binary: %s", result.Binary)).
+				Title("Add this entry?").
 				Value(&confirmed),
 		),
 	)
@@ -75,25 +86,21 @@ func runAdd(cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	// chmod +x
 	if err := os.Chmod(result.Binary, 0755); err != nil {
 		return fmt.Errorf("failed to set executable bit: %w", err)
 	}
 
-	// Determine desktop file destination
 	desktopDir := filepath.Join(os.Getenv("HOME"), ".local", "share", "applications")
 	if globalFlag {
 		desktopDir = "/usr/share/applications"
 	}
 	desktopPath := filepath.Join(desktopDir, strings.ToLower(name)+".desktop")
 
-	// Build exec line
 	execLine := desktop.ExecLine{
 		Binary: result.Binary,
 		Env:    make(map[string]string),
 	}
 
-	// Write desktop file
 	df := desktop.New(desktopPath)
 	df.Set("Name", name)
 	df.Set("Exec", execLine.String())
@@ -107,26 +114,25 @@ func runAdd(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to write desktop file: %w", err)
 	}
 
-	// Update registry
 	reg, err := registry.Load()
 	if err != nil {
 		return fmt.Errorf("failed to load registry: %w", err)
 	}
 
 	reg.Add(registry.Entry{
-		Name:    name,
-		Binary:  result.Binary,
-		Desktop: desktopPath,
-		Icon:    result.Icon,
-		Scope:   scope(),
-		Status:  registry.StatusHealthy,
+		Name:      name,
+		Binary:    result.Binary,
+		Desktop:   desktopPath,
+		Icon:      result.Icon,
+		ParentDir: parentDir,
+		Scope:     scope(),
+		Status:    registry.StatusHealthy,
 	})
 
 	if err := reg.Save(); err != nil {
 		return fmt.Errorf("failed to save registry: %w", err)
 	}
 
-	// Run update-desktop-database
 	if err := runUpdateDB(desktopDir); err != nil {
 		fmt.Fprintf(os.Stderr, "warning: update-desktop-database failed: %v\n", err)
 	}

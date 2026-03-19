@@ -20,12 +20,13 @@ const (
 
 // Entry represents a single managed AppImage and its associated files.
 type Entry struct {
-	Name    string `json:"name"`
-	Binary  string `json:"binary"`
-	Desktop string `json:"desktop"`
-	Icon    string `json:"icon"`
-	Scope   string `json:"scope"` // "user" or "global"
-	Status  Status `json:"status"`
+	Name      string `json:"name"`
+	Binary    string `json:"binary"`
+	Desktop   string `json:"desktop"`
+	Icon      string `json:"icon"`
+	ParentDir string `json:"parent_dir"`
+	Scope     string `json:"scope"` // "user" or "global"
+	Status    Status `json:"status"`
 }
 
 // Registry holds all entries managed by aidfm.
