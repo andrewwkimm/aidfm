@@ -55,7 +55,7 @@ func runAdd(cmd *cobra.Command, args []string) error {
 		parentDir = filepath.Dir(inputPath)
 	}
 
-	name := strings.TrimSuffix(filepath.Base(result.Binary), ".AppImage")
+	name := strings.ToLower(filepath.Base(parentDir))
 	confirmed := false
 
 	form := huh.NewForm(
