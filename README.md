@@ -1,5 +1,6 @@
 # aidfm
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/andrewwkimm/aidfm.svg)](https://pkg.go.dev/github.com/andrewwkimm/aidfm)
 ![CI](https://github.com/andrewwkimm/aidfm/actions/workflows/ci.yml/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/andrewwkimm/aidfm)](https://goreportcard.com/report/github.com/andrewwkimm/aidfm)
 ![Go version](https://img.shields.io/github/go-mod/go-version/andrewwkimm/aidfm)
