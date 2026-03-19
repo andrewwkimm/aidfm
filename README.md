@@ -2,7 +2,7 @@
 
 **A**pp**I**mage **D**esktop **F**ile **M**anager is a CLI for managing AppImages on Linux. It automates the creation of desktop entries, manages binary permissions, and maintains a local registry to track the health of installed applications.
 
-## Getting starting
+## Getting started
 
 To use aidfm, build the application from source:
 
