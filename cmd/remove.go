@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/charmbracelet/huh"
+	"github.com/rkoesters/xdg/trash"
 	"github.com/spf13/cobra"
 
 	"github.com/andrewwkimm/aidfm/internal/registry"
@@ -73,17 +74,19 @@ func runRemove(cmd *cobra.Command, args []string) error {
 
 	// Purge binary and icon if requested
 	if removePurge {
-		if err := os.Remove(entry.Binary); err != nil && !os.IsNotExist(err) {
-			fmt.Fprintf(os.Stderr, "warning: failed to remove binary: %v\n", err)
-		}
-		if entry.Icon != "" {
-			if err := os.Remove(entry.Icon); err != nil && !os.IsNotExist(err) {
-				fmt.Fprintf(os.Stderr, "warning: failed to remove icon: %v\n", err)
-			}
-		}
 		if entry.ParentDir != "" {
-			if err := os.RemoveAll(entry.ParentDir); err != nil {
-				fmt.Fprintf(os.Stderr, "warning: failed to remove app directory: %v\n", err)
+			if err := trash.Trash(entry.ParentDir); err != nil {
+				fmt.Fprintf(os.Stderr, "warning: failed to move app directory to trash: %v\n", err)
+			}
+		} else {
+			// No parent dir recorded, fall back to trashing binary and icon individually
+			if err := trash.Trash(entry.Binary); err != nil {
+				fmt.Fprintf(os.Stderr, "warning: failed to move binary to trash: %v\n", err)
+			}
+			if entry.Icon != "" {
+				if err := trash.Trash(entry.Icon); err != nil {
+					fmt.Fprintf(os.Stderr, "warning: failed to move icon to trash: %v\n", err)
+				}
 			}
 		}
 	}
