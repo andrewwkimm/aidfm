@@ -6,8 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/yourusername/aidfm/internal/desktop"
-	"github.com/yourusername/aidfm/internal/registry"
+	"github.com/andrewwkimm/aidfm/internal/desktop"
+	"github.com/andrewwkimm/aidfm/internal/registry"
 )
 
 var fixCmd = &cobra.Command{

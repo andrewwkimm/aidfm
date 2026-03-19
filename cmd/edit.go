@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/yourusername/aidfm/internal/registry"
+	"github.com/andrewwkimm/aidfm/internal/registry"
 )
 
 var editCmd = &cobra.Command{

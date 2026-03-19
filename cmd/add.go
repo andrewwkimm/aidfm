@@ -9,9 +9,9 @@ import (
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 
-	"github.com/yourusername/aidfm/internal/desktop"
-	"github.com/yourusername/aidfm/internal/detect"
-	"github.com/yourusername/aidfm/internal/registry"
+	"github.com/andrewwkimm/aidfm/internal/desktop"
+	"github.com/andrewwkimm/aidfm/internal/detect"
+	"github.com/andrewwkimm/aidfm/internal/registry"
 )
 
 var globalFlag bool
