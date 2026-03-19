@@ -2,6 +2,26 @@
 
 AppImage Desktop File Manager
 
+## Getting starting
+
+To use aidfm, build the application from source:
+
+```bash
+git clone https://github.com/yourname/aidfm.git
+cd aidfm
+go build -o aidfm .
+mv aidfm ~/.local/bin/aidfm
+```
+
+The simplest usage would be adding an AppImage or a directory with an AppImage:
+
+```bash
+aidfm some_app.AppImage
+aidfm add some_dir/some_app.AppImage
+```
+
+If presented with a directory, it will autodetect if an image file exists and will set it as the desktop icon.
+
 ## Usage
 
 The aidfm CLI has the following structure:
