@@ -22,7 +22,7 @@ jobs:
         run: go mod tidy
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           version: v2.4.2
           args: --timeout=5m --out-format=colored-line-number
