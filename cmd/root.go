@@ -9,7 +9,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "aidfm",
 	Short: "AppImage Desktop File Manager",
-	Long:  "Manages AppImages as first-class packages. Creates and maintains .desktop files and tracks them via a local registry.",
+	Long:  "An AppImage manager that automates desktop integration and registry tracking.",
 }
 
 func Execute() {
